@@ -12,6 +12,7 @@ import android.util.AttributeSet;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
@@ -235,6 +236,14 @@ public class CollapsibleCalendar extends UICalendar {
                         0,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
                         1));
+
+                final GestureDetector swipeDetector = new GestureDetector(mContext, new SwipeGesture(mContext));
+                view.setOnTouchListener(new OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View v, MotionEvent event) {
+                        return swipeDetector.onTouchEvent(event);
+                    }
+                });
                 view.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -574,6 +583,27 @@ public class CollapsibleCalendar extends UICalendar {
         if (getState() != state) {
             mIsWaitingForUpdate = true;
             requestLayout();
+        }
+    }
+
+    private final class SwipeGesture extends GestureDetector.SimpleOnGestureListener {
+        private final int swipeMinDistance;
+        private final int swipeThresholdVelocity;
+
+        public SwipeGesture(Context context) {
+            final ViewConfiguration viewConfig = ViewConfiguration.get(context);
+            swipeMinDistance = viewConfig.getScaledTouchSlop();
+            swipeThresholdVelocity = viewConfig.getScaledMinimumFlingVelocity();
+        }
+
+        @Override
+        public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+            if (e1.getX() - e2.getX() > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity) {
+                nextMonth();
+            }  else if (e2.getX() - e1.getX() > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity) {
+                prevMonth();
+            }
+            return false;
         }
     }
 
