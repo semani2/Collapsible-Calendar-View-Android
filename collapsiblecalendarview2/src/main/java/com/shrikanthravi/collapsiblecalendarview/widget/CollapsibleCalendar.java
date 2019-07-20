@@ -66,12 +66,19 @@ public class CollapsibleCalendar extends UICalendar {
 
 
 
-            Calendar cal = Calendar.getInstance();
-            CalendarAdapter adapter = new CalendarAdapter(context, cal);
-            setAdapter(adapter);
+        Calendar cal = Calendar.getInstance();
+        CalendarAdapter adapter = new CalendarAdapter(context, cal);
+        setAdapter(adapter);
 
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        Day today = new Day(
+                year,
+                month,
+                day);
 
-
+        select(today);
 
         // bind events
 
@@ -621,9 +628,17 @@ public class CollapsibleCalendar extends UICalendar {
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             if (e1.getX() - e2.getX() > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity) {
-                nextMonth();
+                if (expanded) {
+                    nextMonth();
+                } else {
+                    nextWeek();
+                }
             }  else if (e2.getX() - e1.getX() > swipeMinDistance && Math.abs(velocityX) > swipeThresholdVelocity) {
-                prevMonth();
+                if (expanded) {
+                    prevMonth();
+                } else {
+                    prevWeek();
+                }
             }
             return false;
         }
