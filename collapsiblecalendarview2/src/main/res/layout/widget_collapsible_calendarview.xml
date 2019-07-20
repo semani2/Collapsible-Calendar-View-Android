@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@android:color/white">
+    android:background="@android:color/white"
+    android:paddingStart="16dp"
+    android:paddingEnd="16dp">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- To be Deleted -->
         <RelativeLayout
             android:id="@+id/layout_btn_group_month"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/btn_prev_month"
@@ -37,10 +42,12 @@
 
         </RelativeLayout>
 
+        <!-- To be deleted -->
         <RelativeLayout
             android:id="@+id/layout_btn_group_week"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:visibility="gone">
 
             <ImageView
                 android:id="@+id/btn_prev_week"
@@ -62,15 +69,34 @@
 
         </RelativeLayout>
 
-        <TextView
-            android:id="@+id/txt_title"
+
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:padding="8dp"
-            android:textColor="@android:color/black"
-            android:textSize="16sp"
-            android:text="Jun 2015" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="8dp"
+                android:textColor="@color/primaryTextColor"
+                android:textSize="32sp"
+                android:textStyle="bold"
+                tools:text="June"
+                android:lineSpacingExtra="-5.1sp" />
+
+            <ImageView
+                android:layout_width="18dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_calendar_expand"
+                android:layout_gravity="center"
+                android:layout_marginTop="3dp"
+                android:layout_marginStart="5dp"
+                android:id="@+id/calendar_expand_image_view" />
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 
@@ -98,7 +124,7 @@
     <com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView
         android:layout_width="30dp"
         android:layout_gravity="center"
-        android:visibility="visible"
+        android:visibility="gone"
         app:eiv_animationDuration="300"
         app:eiv_color="#000"
         app:eiv_colorLess="@android:color/black"
@@ -107,7 +133,7 @@
         app:eiv_roundedCorners="true"
         app:eiv_switchColor="true"
         android:id="@+id/expandIcon"
-        android:layout_height="30dp"/>
+        android:layout_height="30dp" />
 
 
 </LinearLayout>

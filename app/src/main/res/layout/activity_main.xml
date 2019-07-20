@@ -14,7 +14,6 @@
         android:id="@+id/collapsibleCalendarView"
         app:todayItem_textColor="@android:color/white"
         app:todayItem_background="@drawable/circle_white_stroke_background"
-        app:selectedItem_background="@drawable/circle_white_solid_background"
         app:buttonLeft_drawableTintColor="@android:color/white"
         app:buttonRight_drawableTintColor="@android:color/white"
         app:expandIconColor="@android:color/white"

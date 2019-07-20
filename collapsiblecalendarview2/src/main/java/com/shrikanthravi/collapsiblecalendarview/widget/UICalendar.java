@@ -55,6 +55,7 @@ public abstract class UICalendar extends LinearLayout {
     protected ImageView mBtnPrevWeek;
     protected ImageView mBtnNextWeek;
     protected ExpandIconView expandIconView;
+    protected ImageView mExpandCollapseImageView;
 
     // Attributes
     private boolean mShowWeek = true;
@@ -126,7 +127,7 @@ public abstract class UICalendar extends LinearLayout {
         mBtnPrevWeek         = rootView.findViewById(R.id.btn_prev_week);
         mBtnNextWeek         = rootView.findViewById(R.id.btn_next_week);
         expandIconView       = rootView.findViewById(R.id.expandIcon);
-
+        mExpandCollapseImageView = rootView.findViewById(R.id.calendar_expand_image_view);
 
 
 
@@ -255,7 +256,7 @@ public abstract class UICalendar extends LinearLayout {
         this.mTextColor = textColor;
         redraw();
 
-        mTxtTitle.setTextColor(mTextColor);
+        //mTxtTitle.setTextColor(mTextColor);
     }
 
     public int getPrimaryColor() {
@@ -266,7 +267,7 @@ public abstract class UICalendar extends LinearLayout {
         this.mPrimaryColor = primaryColor;
         redraw();
 
-        mLayoutRoot.setBackgroundColor(mPrimaryColor);
+        //mLayoutRoot.setBackgroundColor(mPrimaryColor);
     }
 
     private void setEventColor(int eventColor) {

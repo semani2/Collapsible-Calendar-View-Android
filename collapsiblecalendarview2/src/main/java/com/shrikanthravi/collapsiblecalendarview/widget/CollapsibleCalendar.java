@@ -7,6 +7,8 @@ package com.shrikanthravi.collapsiblecalendarview.widget;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.view.GestureDetector;
@@ -30,6 +32,7 @@ import com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class CollapsibleCalendar extends UICalendar {
 
@@ -100,10 +103,22 @@ public class CollapsibleCalendar extends UICalendar {
             }
         });
 
-        expandIconView.setState(ExpandIconView.MORE,true);
+        //expandIconView.setState(ExpandIconView.MORE,true);
 
 
         expandIconView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(expanded){
+                    collapse(400);
+                }
+                else{
+                    expand(400);
+                }
+            }
+        });
+
+        mExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(expanded){
@@ -150,12 +165,12 @@ public class CollapsibleCalendar extends UICalendar {
     @Override
     protected void redraw() {
         // redraw all views of week
-        TableRow rowWeek = (TableRow) mTableHead.getChildAt(0);
+        /*TableRow rowWeek = (TableRow) mTableHead.getChildAt(0);
         if (rowWeek != null) {
             for (int i = 0; i < rowWeek.getChildCount(); i++) {
                 ((TextView) rowWeek.getChildAt(i)).setTextColor(getTextColor());
             }
-        }
+        }*/
         // redraw all views of day
         if (mAdapter != null) {
             for (int i = 0; i < mAdapter.getCount(); i++) {
@@ -163,18 +178,23 @@ public class CollapsibleCalendar extends UICalendar {
                 View view = mAdapter.getView(i);
                 TextView txtDay = (TextView) view.findViewById(R.id.txt_day);
                 txtDay.setBackgroundColor(Color.TRANSPARENT);
-                txtDay.setTextColor(getTextColor());
+                //txtDay.setTextColor(getTextColor());
 
                 // set today's item
                 if (isToady(day)) {
-                    txtDay.setBackgroundDrawable(getTodayItemBackgroundDrawable());
-                    txtDay.setTextColor(getTodayItemTextColor());
+                    txtDay.setPaintFlags(txtDay.getPaintFlags()| Paint.UNDERLINE_TEXT_FLAG);
+                    //txtDay.setTextColor(getTodayItemTextColor());
+                } else {
+                    txtDay.setPaintFlags(0);
                 }
 
                 // set the selected item
                 if (isSelectedDay(day)) {
                     txtDay.setBackgroundDrawable(getSelectedItemBackgroundDrawable());
-                    txtDay.setTextColor(getSelectedItemTextColor());
+                    txtDay.setTextColor(Color.WHITE);
+                } else {
+                    txtDay.setBackgroundColor(Color.TRANSPARENT);
+                    txtDay.setTextColor(mContext.getResources().getColor(R.color.primaryTextColor));
                 }
             }
         }
@@ -186,7 +206,7 @@ public class CollapsibleCalendar extends UICalendar {
             mAdapter.refresh();
 
             // reset UI
-            SimpleDateFormat dateFormat = new SimpleDateFormat("MMM yyyy");
+            SimpleDateFormat dateFormat = new SimpleDateFormat("MMMM", Locale.US);
             dateFormat.setTimeZone(mAdapter.getCalendar().getTimeZone());
             mTxtTitle.setText(dateFormat.format(mAdapter.getCalendar().getTime()));
             mTableHead.removeAllViews();
@@ -479,6 +499,7 @@ public class CollapsibleCalendar extends UICalendar {
 
                         mBtnPrevWeek.setClickable(true);
                         mBtnNextWeek.setClickable(true);
+                        mExpandCollapseImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_calendar_expand));
                     }
                 }
             };
@@ -546,6 +567,7 @@ public class CollapsibleCalendar extends UICalendar {
 
                         mBtnPrevMonth.setClickable(true);
                         mBtnNextMonth.setClickable(true);
+                        mExpandCollapseImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_calendar_collapse));
                     }
                 }
             };
