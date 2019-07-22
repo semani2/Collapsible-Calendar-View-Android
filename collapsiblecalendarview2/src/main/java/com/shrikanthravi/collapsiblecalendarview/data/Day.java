@@ -13,11 +13,13 @@ public class Day implements Parcelable{
     private int mYear;
     private int mMonth;
     private int mDay;
+    private boolean mIsDisabled;
 
     public Day(int year, int month, int day){
         this.mYear = year;
         this.mMonth = month;
         this.mDay = day;
+        mIsDisabled = false;
     }
 
     public int getMonth(){
@@ -32,7 +34,23 @@ public class Day implements Parcelable{
         return mDay;
     }
 
+    public boolean isDisabled() {
+        return mIsDisabled;
+    }
 
+    public void setIsDisabled(boolean isDisabled) {
+        mIsDisabled = isDisabled;
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Day) {
+            return ((Day) obj).mDay == mDay && ((Day) obj).mMonth == mMonth
+                    && ((Day) obj).mYear == mYear;
+        }
+        return false;
+    }
 
     public Day(Parcel in){
         int[] data = new int[3];

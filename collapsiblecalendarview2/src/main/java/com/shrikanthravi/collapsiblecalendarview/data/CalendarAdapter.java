@@ -3,6 +3,7 @@ package com.shrikanthravi.collapsiblecalendarview.data;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -22,14 +23,17 @@ public class CalendarAdapter {
     private int mFirstDayOfWeek = 0;
     private Calendar mCal;
     private LayoutInflater mInflater;
+    private final Context mContext;
 
     List<Day> mItemList = new ArrayList<>();
     List<View> mViewList = new ArrayList<>();
     List<Event> mEventList = new ArrayList<>();
+    List<Day> mNoEventDayList = new ArrayList<>();
 
     public CalendarAdapter(Context context, Calendar cal) {
         this.mCal = (Calendar) cal.clone();
         this.mCal.set(Calendar.DAY_OF_MONTH, 1);
+        this.mContext = context;
 
         mInflater = LayoutInflater.from(context);
 
@@ -59,6 +63,11 @@ public class CalendarAdapter {
 
     public void addEvent(Event event) {
         mEventList.add(event);
+    }
+
+    public void setNoEventDays(List<Day> noEventDays) {
+        mNoEventDayList.clear();
+        mNoEventDayList.addAll(noEventDays);
     }
 
     public void refresh() {
@@ -113,21 +122,27 @@ public class CalendarAdapter {
             Day day = new Day(numYear, numMonth, numDay);
 
             View view = mInflater.inflate(R.layout.day_layout, null);
-            TextView txtDay = (TextView) view.findViewById(R.id.txt_day);
-            ImageView imgEventTag = (ImageView) view.findViewById(R.id.img_event_tag);
+            TextView txtDay = view.findViewById(R.id.txt_day);
+            ImageView imgEventTag = view.findViewById(R.id.img_event_tag);
 
             txtDay.setText(String.valueOf(day.getDay()));
             if (day.getMonth() != mCal.get(Calendar.MONTH)) {
                 txtDay.setAlpha(0.3f);
             }
 
-            for (int j = 0; j < mEventList.size(); j++) {
+            /*for (int j = 0; j < mEventList.size(); j++) {
                 Event event = mEventList.get(j);
                 if (day.getYear() == event.getYear()
                         && day.getMonth() == event.getMonth()
                         && day.getDay() == event.getDay()) {
                     imgEventTag.setVisibility(View.VISIBLE);
                     imgEventTag.setColorFilter(event.getColor(),PorterDuff.Mode.SRC_ATOP);
+                }
+            }*/
+            for(Day d : mNoEventDayList) {
+                if (d.equals(day)) {
+                    // Disable this
+                    day.setIsDisabled(true);
                 }
             }
 

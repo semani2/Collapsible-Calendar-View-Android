@@ -32,12 +32,14 @@ import com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
 
 public class CollapsibleCalendar extends UICalendar {
 
     private CalendarAdapter mAdapter;
     private CalendarListener mListener;
+    private List<Day> mNoEventDays;
 
     private boolean expanded=false;
 
@@ -145,6 +147,10 @@ public class CollapsibleCalendar extends UICalendar {
         });
 
 
+        if (mNoEventDays != null && mNoEventDays.size() > 0) {
+            setNoEventDays(mNoEventDays);
+        }
+
 
     }
 
@@ -202,6 +208,10 @@ public class CollapsibleCalendar extends UICalendar {
                 } else {
                     txtDay.setBackgroundColor(Color.TRANSPARENT);
                     txtDay.setTextColor(mContext.getResources().getColor(R.color.primaryTextColor));
+                }
+
+                if (day.isDisabled()) {
+                    txtDay.setTextColor(mContext.getResources().getColor(R.color.noEventDateTextColor));
                 }
             }
         }
@@ -271,12 +281,14 @@ public class CollapsibleCalendar extends UICalendar {
                         return swipeDetector.onTouchEvent(event);
                     }
                 });
-                view.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        onItemClicked(v, mAdapter.getItem(position));
-                    }
-                });
+                if (!mAdapter.getItem(position).isDisabled()) {
+                    view.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            onItemClicked(v, mAdapter.getItem(position));
+                        }
+                    });
+                }
                 rowCurrent.addView(view);
             }
 
@@ -349,6 +361,13 @@ public class CollapsibleCalendar extends UICalendar {
 
     public void addEventTag(int numYear, int numMonth, int numDay,int color) {
         mAdapter.addEvent(new Event(numYear, numMonth, numDay,color));
+
+        reload();
+    }
+
+    public void setNoEventDays(List<Day> noEventDays) {
+        mAdapter.setNoEventDays(noEventDays);
+        this.mNoEventDays = noEventDays;
 
         reload();
     }
@@ -511,6 +530,8 @@ public class CollapsibleCalendar extends UICalendar {
 
                     setSelectedItem(null);
                     init(mContext);
+
+                    redraw();
                 }
             };
             anim.setDuration(duration);

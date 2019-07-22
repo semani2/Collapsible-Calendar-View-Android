@@ -3,4 +3,5 @@
     <color name="primaryColor">#3950fe</color>
     <color name="primaryTextColor">#0a1024</color>
     <color name="colorDayNameTextColor">#aeafaf</color>
+    <color name="noEventDateTextColor">#CECFD2</color>
 </resources>

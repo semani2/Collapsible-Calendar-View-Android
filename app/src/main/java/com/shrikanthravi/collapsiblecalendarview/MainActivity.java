@@ -5,10 +5,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 
+import com.shrikanthravi.collapsiblecalendarview.data.Day;
 import com.shrikanthravi.collapsiblecalendarview.widget.CollapsibleCalendar;
 import com.shrikanthravi.collapsiblecalendarview.widget.UICalendar;
 
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
 
@@ -56,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        collapsibleCalendar.setNoEventDays(Collections.singletonList(new Day(today.get(Calendar.YEAR),
+                today.get(Calendar.MONTH), today.get(Calendar.DAY_OF_MONTH) + 3)));
 
     }
 }
