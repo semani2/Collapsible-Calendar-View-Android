@@ -508,6 +508,9 @@ public class CollapsibleCalendar extends UICalendar {
                         mBtnNextWeek.setClickable(true);
                         mExpandCollapseImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_calendar_expand));
                     }
+
+                    setSelectedItem(null);
+                    init(mContext);
                 }
             };
             anim.setDuration(duration);

@@ -128,9 +128,6 @@ public abstract class UICalendar extends LinearLayout {
         mBtnNextWeek         = rootView.findViewById(R.id.btn_next_week);
         expandIconView       = rootView.findViewById(R.id.expandIcon);
         mExpandCollapseImageView = rootView.findViewById(R.id.calendar_expand_image_view);
-
-
-
     }
 
     protected void setAttributes(TypedArray attrs) {
