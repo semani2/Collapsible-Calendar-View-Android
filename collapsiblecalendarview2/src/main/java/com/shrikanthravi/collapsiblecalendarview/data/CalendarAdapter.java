@@ -40,6 +40,17 @@ public class CalendarAdapter {
         refresh();
     }
 
+    public CalendarAdapter(Context context, Calendar cal, List<Event> eventList) {
+        this.mCal = (Calendar) cal.clone();
+        this.mCal.set(Calendar.DAY_OF_MONTH, 1);
+        this.mContext = context;
+        this.mEventList.addAll(eventList);
+
+        mInflater = LayoutInflater.from(context);
+
+        refresh();
+    }
+
     // public methods
     public int getCount() {
         return mItemList.size();
@@ -68,6 +79,11 @@ public class CalendarAdapter {
     public void setNoEventDays(List<Day> noEventDays) {
         mNoEventDayList.clear();
         mNoEventDayList.addAll(noEventDays);
+    }
+
+    public void addAllEvents(List<Event> eventList) {
+        this.mEventList.clear();
+        this.mEventList.addAll(eventList);
     }
 
     public void refresh() {
@@ -130,15 +146,15 @@ public class CalendarAdapter {
                 txtDay.setAlpha(0.3f);
             }
 
-            /*for (int j = 0; j < mEventList.size(); j++) {
+            for (int j = 0; j < mEventList.size(); j++) {
                 Event event = mEventList.get(j);
                 if (day.getYear() == event.getYear()
                         && day.getMonth() == event.getMonth()
                         && day.getDay() == event.getDay()) {
                     imgEventTag.setVisibility(View.VISIBLE);
-                    imgEventTag.setColorFilter(event.getColor(),PorterDuff.Mode.SRC_ATOP);
+                    imgEventTag.setColorFilter(mContext.getResources().getColor(R.color.eventColor), PorterDuff.Mode.SRC_ATOP);
                 }
-            }*/
+            }
             for(Day d : mNoEventDayList) {
                 if (d.equals(day)) {
                     // Disable this

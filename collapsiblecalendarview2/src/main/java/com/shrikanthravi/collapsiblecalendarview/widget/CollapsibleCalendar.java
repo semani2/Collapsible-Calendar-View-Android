@@ -31,6 +31,7 @@ import com.shrikanthravi.collapsiblecalendarview.data.Event;
 import com.shrikanthravi.collapsiblecalendarview.view.ExpandIconView;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
@@ -40,6 +41,7 @@ public class CollapsibleCalendar extends UICalendar {
     private CalendarAdapter mAdapter;
     private CalendarListener mListener;
     private List<Day> mNoEventDays;
+    List<Event> mEventList = new ArrayList<>();
 
     private boolean expanded=false;
 
@@ -127,7 +129,7 @@ public class CollapsibleCalendar extends UICalendar {
             }
         });
 
-        mExpandCollapseImageView.setOnClickListener(new View.OnClickListener() {
+        mTitleLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(expanded){
@@ -354,8 +356,18 @@ public class CollapsibleCalendar extends UICalendar {
     }
 
     public void addEventTag(int numYear, int numMonth, int numDay) {
-        mAdapter.addEvent(new Event(numYear, numMonth, numDay,getEventColor()));
+        Event event = new Event(numYear, numMonth, numDay, getEventColor());
+        mAdapter.addEvent(event);
+        mEventList.add(event);
 
+        reload();
+    }
+
+    public void addEvents(List<Event> eventList) {
+        mEventList.clear();
+        mEventList.addAll(eventList);
+
+        mAdapter.addAllEvents(eventList);
         reload();
     }
 
@@ -492,8 +504,6 @@ public class CollapsibleCalendar extends UICalendar {
 
             mLayoutBtnGroupMonth.setVisibility(GONE);
             mLayoutBtnGroupWeek.setVisibility(VISIBLE);
-            mBtnPrevWeek.setClickable(false);
-            mBtnNextWeek.setClickable(false);
 
             int index = getSuitableRowIndex();
             mCurrentWeekIndex = index;
@@ -528,10 +538,7 @@ public class CollapsibleCalendar extends UICalendar {
                         mExpandCollapseImageView.setImageDrawable(mContext.getResources().getDrawable(R.drawable.ic_calendar_expand));
                     }
 
-                    setSelectedItem(null);
-                    init(mContext);
-
-                    redraw();
+                   //resetAfterCollapse();
                 }
             };
             anim.setDuration(duration);
@@ -561,7 +568,7 @@ public class CollapsibleCalendar extends UICalendar {
             mHandler.post(new Runnable() {
                 @Override
                 public void run() {
-                    mScrollViewBody.smoothScrollTo(0, topHeight);
+                    mScrollViewBody.scrollTo(0, topHeight);
                 }
             });
 
@@ -609,6 +616,26 @@ public class CollapsibleCalendar extends UICalendar {
         expandIconView.setState(ExpandIconView.LESS,true);
     }
 
+    private void resetAfterCollapse() {
+        setSelectedItem(null);
+
+        Calendar cal = Calendar.getInstance();
+        CalendarAdapter adapter = new CalendarAdapter(mContext, cal, mEventList);
+        setAdapter(adapter);
+
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        int month = cal.get(Calendar.MONTH);
+        int year = cal.get(Calendar.YEAR);
+        Day today = new Day(
+                year,
+                month,
+                day);
+
+        select(today);
+
+        redraw();
+    }
+
     @Override
     public void setState(int state) {
         super.setState(state);
@@ -626,7 +653,7 @@ public class CollapsibleCalendar extends UICalendar {
         redraw();
 
         if (mListener != null) {
-            mListener.onDaySelect();
+            mListener.onDaySelect(new Day(day.getYear(), day.getMonth() + 1, day.getDay()));
         }
     }
 
@@ -676,7 +703,7 @@ public class CollapsibleCalendar extends UICalendar {
     public interface CalendarListener {
 
         // triggered when a day is selected programmatically or clicked by user.
-        void onDaySelect();
+        void onDaySelect(Day day);
 
         // triggered only when the views of day on calendar are clicked by user.
         void onItemClick(View v);
