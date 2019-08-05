@@ -6,7 +6,7 @@
     android:orientation="vertical"
     android:gravity="center">
 
-    <TextView
+    <com.shrikanthravi.collapsiblecalendarview.view.KutirRegularTextView
         android:id="@+id/txt_day"
         android:layout_width="@dimen/day_circle_width"
         android:layout_height="@dimen/day_circle_height"
