@@ -30,6 +30,10 @@ public class MainActivity extends AppCompatActivity {
         today.add(Calendar.DATE,1);
         collapsibleCalendar.addEventTag(today.get(Calendar.YEAR),today.get(Calendar.MONTH),today.get(Calendar.DAY_OF_MONTH));
 
+        Calendar julyEvent = Calendar.getInstance();
+        julyEvent.set(2019, 6, 31);
+        collapsibleCalendar.addEventTag(julyEvent.get(Calendar.YEAR), julyEvent.get(Calendar.MONTH), julyEvent.get(Calendar.DAY_OF_MONTH));
+
         System.out.println("Testing date "+collapsibleCalendar.getSelectedDay().getDay()+"/"+collapsibleCalendar.getSelectedDay().getMonth()+"/"+collapsibleCalendar.getSelectedDay().getYear());
         collapsibleCalendar.setCalendarListener(new CollapsibleCalendar.CalendarListener() {
             @Override

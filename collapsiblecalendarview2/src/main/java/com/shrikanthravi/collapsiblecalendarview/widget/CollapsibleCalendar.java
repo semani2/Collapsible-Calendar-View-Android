@@ -217,7 +217,7 @@ public class CollapsibleCalendar extends UICalendar {
                 }
 
                 // set the selected item
-                if (isSelectedDay(day)) {
+                if (isSelectedDay(day) && day.getMonth() == mAdapter.getCalendar().get(Calendar.MONTH)) {
                     txtDay.setBackgroundDrawable(getSelectedItemBackgroundDrawable());
                     txtDay.setTextColor(Color.WHITE);
                 } else {

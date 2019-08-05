@@ -148,7 +148,7 @@ public class CalendarAdapter {
 
             for (int j = 0; j < mEventList.size(); j++) {
                 Event event = mEventList.get(j);
-                if (day.getYear() == event.getYear()
+                if (day.getMonth() == mCal.get(Calendar.MONTH) && day.getYear() == event.getYear()
                         && day.getMonth() == event.getMonth()
                         && day.getDay() == event.getDay()) {
                     imgEventTag.setVisibility(View.VISIBLE);
