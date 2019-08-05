@@ -13,6 +13,7 @@ import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -297,21 +298,10 @@ public class CollapsibleCalendar extends UICalendar {
                     mTableBody.addView(rowCurrent);
                 }
                 final View view = mAdapter.getView(position);
-                TableRow.LayoutParams params1 = new TableRow.LayoutParams(
+                view.setLayoutParams(new TableRow.LayoutParams(
                         0,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1);
-                /*if (i != 0 && i != 6) {
-                    params1.setMarginEnd(getPixelsFromDp(9));
-                    params1.setMarginStart(getPixelsFromDp(9));
-                } else if (i == 0) {
-                    params1.setMarginStart(getPixelsFromDp(17));
-                    params1.setMarginEnd(getPixelsFromDp(9));
-                } else {
-                    params1.setMarginStart(getPixelsFromDp(9));
-                    params1.setMarginEnd(24);
-                }*/
-                view.setLayoutParams(params1);
+                        1));
 
                 final GestureDetector swipeDetector = new GestureDetector(mContext, new SwipeGesture(mContext));
                 view.setOnTouchListener(new OnTouchListener() {
@@ -353,8 +343,6 @@ public class CollapsibleCalendar extends UICalendar {
     }
 
     public void onItemClicked(View view, Day day) {
-        select(day);
-
         Calendar cal = mAdapter.getCalendar();
 
         int newYear = day.getYear();
@@ -362,7 +350,7 @@ public class CollapsibleCalendar extends UICalendar {
         int oldYear = cal.get(Calendar.YEAR);
         int oldMonth = cal.get(Calendar.MONTH);
         if (newMonth != oldMonth) {
-            cal.set(day.getYear(), day.getMonth(), 1);
+            /*cal.set(day.getYear(), day.getMonth(), 1);
 
             if (newYear > oldYear || newMonth > oldMonth) {
                 mCurrentWeekIndex = 0;
@@ -373,7 +361,10 @@ public class CollapsibleCalendar extends UICalendar {
             if (mListener != null) {
                 mListener.onMonthChange();
             }
-            reload();
+            reload();*/
+            Log.d("KutirCalendar", "Day from another month selected, do nothing");
+        } else {
+            select(day);
         }
 
         if (mListener != null) {
@@ -662,7 +653,7 @@ public class CollapsibleCalendar extends UICalendar {
         ));
     }
 
-    private void resetAfterCollapse() {
+    /*private void resetAfterCollapse() {
         setSelectedItem(null);
 
         Calendar cal = Calendar.getInstance();
@@ -680,7 +671,7 @@ public class CollapsibleCalendar extends UICalendar {
         select(today);
 
         redraw();
-    }
+    }*/
 
     @Override
     public void setState(int state) {
