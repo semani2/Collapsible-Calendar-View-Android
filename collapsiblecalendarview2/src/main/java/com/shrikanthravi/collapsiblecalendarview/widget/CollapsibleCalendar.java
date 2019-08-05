@@ -6,11 +6,14 @@ package com.shrikanthravi.collapsiblecalendarview.widget;
 
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -111,6 +114,15 @@ public class CollapsibleCalendar extends UICalendar {
             @Override
             public void onClick(View v) {
                 nextWeek();
+            }
+        });
+
+        mSettingsButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mListener != null) {
+                    mListener.onSettingClick();
+                }
             }
         });
 
@@ -244,17 +256,30 @@ public class CollapsibleCalendar extends UICalendar {
                     R.string.saturday
             };
             rowCurrent = new TableRow(mContext);
-            rowCurrent.setLayoutParams(new TableLayout.LayoutParams(
+            TableLayout.LayoutParams params = new TableLayout.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.WRAP_CONTENT));
+                    ViewGroup.LayoutParams.WRAP_CONTENT);
+            rowCurrent.setLayoutParams(params);
             for (int i = 0; i < 7; i++) {
                 View view = mInflater.inflate(R.layout.layout_day_of_week, null);
-                TextView txtDayOfWeek = (TextView) view.findViewById(R.id.txt_day_of_week);
+                TextView txtDayOfWeek = view.findViewById(R.id.txt_day_of_week);
                 txtDayOfWeek.setText(dayOfWeekIds[(i + getFirstDayOfWeek()) % 7]);
-                view.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams columnSpacing = new TableRow.LayoutParams(
                         0,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1));
+                        (1f / 7f));
+                if (i != 0 && i != 6) {
+                    columnSpacing.setMarginEnd(getPixelsFromDp(7));
+                    columnSpacing.setMarginStart(getPixelsFromDp(7));
+                } else if (i == 0) {
+                    columnSpacing.setMarginStart(getPixelsFromDp(15));
+                    columnSpacing.setMarginEnd(getPixelsFromDp(7));
+                } else {
+                    columnSpacing.setMarginStart(getPixelsFromDp(7));
+                    columnSpacing.setMarginEnd(22);
+                }
+
+                view.setLayoutParams(columnSpacing);
                 rowCurrent.addView(view);
             }
             mTableHead.addView(rowCurrent);
@@ -265,16 +290,28 @@ public class CollapsibleCalendar extends UICalendar {
 
                 if (position % 7 == 0) {
                     rowCurrent = new TableRow(mContext);
-                    rowCurrent.setLayoutParams(new TableLayout.LayoutParams(
+                    TableLayout.LayoutParams params1 = new TableLayout.LayoutParams(
                             ViewGroup.LayoutParams.MATCH_PARENT,
-                            ViewGroup.LayoutParams.WRAP_CONTENT));
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+                    rowCurrent.setLayoutParams(params1);
                     mTableBody.addView(rowCurrent);
                 }
                 final View view = mAdapter.getView(position);
-                view.setLayoutParams(new TableRow.LayoutParams(
+                TableRow.LayoutParams params1 = new TableRow.LayoutParams(
                         0,
                         ViewGroup.LayoutParams.WRAP_CONTENT,
-                        1));
+                        1);
+                /*if (i != 0 && i != 6) {
+                    params1.setMarginEnd(getPixelsFromDp(9));
+                    params1.setMarginStart(getPixelsFromDp(9));
+                } else if (i == 0) {
+                    params1.setMarginStart(getPixelsFromDp(17));
+                    params1.setMarginEnd(getPixelsFromDp(9));
+                } else {
+                    params1.setMarginStart(getPixelsFromDp(9));
+                    params1.setMarginEnd(24);
+                }*/
+                view.setLayoutParams(params1);
 
                 final GestureDetector swipeDetector = new GestureDetector(mContext, new SwipeGesture(mContext));
                 view.setOnTouchListener(new OnTouchListener() {
@@ -616,6 +653,15 @@ public class CollapsibleCalendar extends UICalendar {
         expandIconView.setState(ExpandIconView.LESS,true);
     }
 
+    private int getPixelsFromDp(float dp) {
+        Resources r = getResources();
+        return Math.round(TypedValue.applyDimension(
+                TypedValue.COMPLEX_UNIT_DIP,
+                dp,
+                r.getDisplayMetrics()
+        ));
+    }
+
     private void resetAfterCollapse() {
         setSelectedItem(null);
 
@@ -716,6 +762,9 @@ public class CollapsibleCalendar extends UICalendar {
 
         // triggered when the week position are changed.
         void onWeekChange(int position);
+
+        // Triggered when the settings icon is clicked
+        void onSettingClick();
     }
 
 

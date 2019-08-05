@@ -6,10 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:background="@android:color/white"
-    android:paddingStart="16dp"
-    android:paddingEnd="16dp"
-    android:paddingBottom="16dp">
+    android:background="@android:color/white">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -71,7 +68,7 @@
 
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:id="@+id/title_layout">
@@ -80,30 +77,46 @@
                 android:id="@+id/txt_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:padding="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:paddingStart="20dp"
                 android:textColor="@color/primaryTextColor"
                 android:textSize="32sp"
-                tools:text="June"
-                android:lineSpacingExtra="-5.1sp" />
+                tools:text="August" />
 
             <ImageView
-                android:layout_width="18dp"
+                android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:src="@drawable/ic_calendar_expand"
-                android:layout_gravity="center"
+                android:layout_gravity="center_vertical"
+                android:paddingStart="10dp"
+                android:paddingEnd="15dp"
                 android:layout_marginTop="3dp"
-                android:layout_marginStart="5dp"
                 android:id="@+id/calendar_expand_image_view" />
 
-
         </LinearLayout>
+
+
+        <ImageButton
+            android:id="@+id/settings_image_button"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_settings"
+            android:paddingStart="15dp"
+            android:paddingEnd="18dp"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
+            android:background="@android:color/transparent" />
 
     </RelativeLayout>
 
     <TableLayout
         android:id="@+id/table_head"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:layout_marginTop="15dp">
 
     </TableLayout>
 
@@ -116,7 +129,9 @@
         <TableLayout
             android:id="@+id/table_body"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingStart="7dp"
+            android:paddingEnd="3dp">
 
         </TableLayout>
 

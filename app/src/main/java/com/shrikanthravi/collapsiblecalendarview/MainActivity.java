@@ -56,6 +56,11 @@ public class MainActivity extends AppCompatActivity {
             public void onWeekChange(int position) {
 
             }
+
+            @Override
+            public void onSettingClick() {
+
+            }
         });
 
         collapsibleCalendar.setNoEventDays(Collections.singletonList(new Day(today.get(Calendar.YEAR),
